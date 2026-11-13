@@ -1,0 +1,84 @@
+{
+  "name": "bmfont-creator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Create game-ready bitmap fonts from individual character images",
+  "main": "dist/main.cjs",
+  "author": "BMFont Creator",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "npm run build && electron .",
+    "dev": "node scripts/dev.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "npm run build && node scripts/e2e.mjs",
+    "pack:mac": "npm run build && electron-builder --mac --dir",
+    "dist:mac": "npm run build && electron-builder --mac dmg zip"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitest/coverage-v8": "^4.1.12",
+    "electron": "^45.3.1",
+    "electron-builder": "^26.0.0",
+    "esbuild": "^0.28.2",
+    "playwright": "^1.56.0",
+    "typescript": "^5.9.0",
+    "vitest": "^4.1.12"
+  },
+  "overrides": {
+    "glob@>=9 <14.0.2": "^14.0.2",
+    "minimatch@>=7 <11.0.1": "^11.0.1"
+  },
+  "build": {
+    "appId": "com.bmfontcreator.app",
+    "productName": "BMFont Creator",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/sharp/**/*",
+      "node_modules/@img/**/*"
+    ],
+    "mac": {
+      "icon": "build/icon.png",
+      "category": "public.app-category.developer-tools",
+      "identity": null,
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
